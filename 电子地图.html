@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+    <style>   
+        html,
+        body,    
+    #container {
+    width: 100%;
+    height: 100%;
+    }
+    .input-card{
+        position: fixed;
+        background-color: #aaa9b0;
+        overflow-y: auto;
+        width: 150px;
+        height: 150px;
+        top: 10px;
+        right: 10px;
+    }
+    .input-card .btn{
+    margin-right: 1.2rem;
+    width: 9rem;
+    }
+    .input-card .btn:last-child{
+    margin-right: 0;
+    }
+  </style>
+<script type="text/javascript">
+    window._AMapSecurityConfig = {
+      securityJsCode: "724e7a2436efd8705ef700ec2f44c7e4",
+    };
+  </script>
+  <script src="https://webapi.amap.com/loader.js"></script>
+<script src="https://webapi.amap.com/maps?v=2.0&key=9e79393c6a9ebf4024567e84733eac5d&plugin=AMap.Driving,AMap.Transfer,Amap.Walking,Amap.Riding,Amap.TruckDriving,Amap.DragRoute,AMap.MoveAnimation"></script>
+<!-- 添加高德API -->
+</head>
+<body>
+
+    <div id="container"></div>
+    
+    <div class="input-card">
+      <input type="button" class="btn" value="开始动画" id="start" onclick="startAnimation()"/>
+      <input type="button" class="btn" value="暂停动画" id="pause" onclick="pauseAnimation()"/>
+      <input type="button" class="btn" value="继续动画" id="resume" onclick="resumeAnimation()"/>
+      <input type="button" class="btn" value="停止动画" id="stop" onclick="stopAnimation()"/>
+      <!-- 添加按钮 -->
+  </div>
+    <script>
+
+          var map = new AMap.Map("container", {
+          center:[102.756793,25.062855],
+          viewMode:'3D',
+          zoom:15,
+        });//初始地图加载
+        var text =new AMap.Text (
+    {
+        position:new AMap.LngLat(102.75199,25.057871),
+        anchor:'botton-center',
+        text:'一号门',
+        Style:{'backgroud-color':'red'},
+    });map.add(text);
+    var text =new AMap.Text (
+    {
+        position:new AMap.LngLat(102.755006,25.057003),
+        anchor:'botton-center',
+        text:'土木楼',
+        Style:{'backgroud-color':'red'},
+    });map.add(text);
+    var text =new AMap.Text (
+    {
+        position:new AMap.LngLat(102.757255,25.056787),
+        anchor:'botton-center',
+        text:'图书馆',
+        Style:{'backgroud-color':'red'},
+    });map.add(text);
+    var text =new AMap.Text (
+    {
+        position:new AMap.LngLat(102.762336,25.057485),
+        anchor:'botton-center',
+        text:'东二院',
+        Style:{'backgroud-color':'red'},
+    });map.add(text);
+    var text =new AMap.Text (
+    {
+        position:new AMap.LngLat(102.760279,25.059107),
+        anchor:'botton-center',
+        text:'一教学楼',
+        Style:{'backgroud-color':'red'},
+    });map.add(text);
+    var text =new AMap.Text (
+    {
+        position:new AMap.LngLat(102.761814,25.06248),
+        anchor:'botton-center',
+        text:'篮球场',
+        Style:{'backgroud-color':'red'},
+    });map.add(text);
+    var text =new AMap.Text (
+    {
+        position:new AMap.LngLat(102.75793,25.061558),
+        anchor:'botton-center',
+        text:'山上图书馆',
+        Style:{'backgroud-color':'red'},
+    });map.add(text);
+    var text =new AMap.Text (
+    {
+        position:new AMap.LngLat(102.756026,25.061775),
+        anchor:'botton-center',
+        text:'11栋',
+        Style:{'backgroud-color':'red'},
+    });map.add(text);
+    var text =new AMap.Text (
+    {
+        position:new AMap.LngLat(102.756312,25.059623),
+        anchor:'botton-center',
+        text:'2号门',
+        Style:{'backgroud-color':'red'},
+    });map.add(text);
+        var center = new AMap.LngLat(102.75199,25.057871); //设置椭圆圆心位置
+var radius = [50, 50]; //设置椭圆的半径大小，单位：米，2000代表横轴半径，1000代表纵轴半径
+//椭圆形 Ellipse 实例
+var ellipse = new AMap.Ellipse({
+  center: center, //椭圆圆心位置
+  radius: radius, //椭圆的半径大小
+  strokeColor: "#FF33FF", //轮廓线颜色
+  strokeWeight: 6, //轮廓线宽度
+  strokeOpacity: 0.2, //轮廓线透明度
+  fillOpacity: 0.4, //椭圆形填充透明度
+  strokeStyle: "dashed", //轮廓线样式，dashed 虚线，还支持 solid，实线
+  strokeDasharray: [10, 20], //勾勒形状轮廓的虚线和间隙的样式，20代表线段长度 10代表间隙长度
+  fillColor: "#1791fc", //椭圆形填充颜色
+  zIndex: 50, //椭圆形在地图上的层级
+});map.add(ellipse);
+        AMap.plugin(['AMap.ToolBar','AMap.Scale','AMap.HawkEye','AMap.ControlBar',],function(){
+    map .addControl(new AMap.ToolBar({position:{
+  right:'100px',
+  center:[102.756793,25.062855],
+  top:'2000px'}}))
+    map .addControl(new AMap.Scale())
+    map .addControl(new AMap.HawkEye())
+   
+    map.addControl(new AMap.ControlBar())
+})
+// 添加控件
+        marker0 = new AMap.Marker({
+            map: map,
+            position: [102.75199,25.057871],
+            icon: "https://a.amap.com/jsapi_demos/static/demo-center-v2/car.png",
+            offset: new AMap.Pixel(-13, -26),
+            duration:100,
+        });
+        // 添加小车
+
+        AMap.plugin(["AMap.Driving","AMap.DragRoute"], function () {
+        var driving = new AMap.Driving({
+          map:map,
+          policy:0, 
+        });
+        var path = [];
+        path.push([102.75199,25.057871]);
+        path.push([102.75815,25.056478]);
+        path.push([102.761161,25.057098]);
+        path.push([102.760517,25.058198]);
+        path.push([102.76035,25.06059]);
+        path.push([102.763336,25.062786]);
+        path.push([102.759589,25.062189]);
+        path.push([102.756106,25.062093]);
+        path.push([102.758237,25.059787]);
+        path.push([102.756297,25.059787]);
+        // 添加路线
+        var route = new AMap.DragRoute(map, path, 0);//动态
+        route.search();
+        driving.search(DragRoute,function(status,result){
+            });
+        });//动态路线动画
+
+          function startAnimation(){
+            marker0.moveAlong(path,{duration:10000,})//速度
+          };
+ 
+    </script>
+    
+</body>
+</html>
